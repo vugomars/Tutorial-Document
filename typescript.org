@@ -1,0 +1,716 @@
+#+TITLE: Typescript
+#+AUTHOR: Dang Quang Vu
+
+* Variable & Data Types
+** Normal Types
+#+begin_src typescript
+let free: boolean = true;
+free = false;
+let score: number = 10;
+let elm: string = "ABC";
+console.log(free)
+console.log(score)
+
+elm = `Free: ${free} + Score: ${score}`;
+console.log(elm)
+#+end_src
+
+#+RESULTS:
+: true
+: 10
+: Free: true + Score: 10
+** Array
+#+begin_src typescript
+let arrNumber: Array<number> = [1,2,4];
+let arrString: String[] = ["sol", "blockchain", "rust"];
+console.log(arrNumber)
+console.log(arrString)
+#+end_src
+
+#+RESULTS:
+: [ 1, 2, 4 ]
+: [ 'sol', 'blockchain', 'rust' ]
+**  Tupler
+#+begin_src typescript
+let x: [string, number];
+x = ["hello", 10];
+console.log(x)
+#+end_src
+
+#+RESULTS:
+: [ 'hello', 10 ]
+** Enum
+#+begin_src typescript
+enum STATUS {CREATE = 100, PROCESS, FINISH = 400};
+
+let todoStatus: STATUS = STATUS.CREATE;
+let todoProcess: STATUS = STATUS.PROCESS;
+let todoFinish: STATUS = STATUS.FINISH;
+
+console.log(todoStatus)
+console.log(todoProcess)
+console.log(todoFinish)
+#+end_src
+
+#+RESULTS:
+: 100
+: 101
+: 400
+** Any
+#+begin_src typescript
+let mVariable: any = 4;
+console.log(mVariable)
+
+let mArray: any[] = [1,true, "abc"];
+
+console.log(mArray)
+#+end_src
+
+#+RESULTS:
+: 4
+: [ 1, true, 'abc' ]
+
+** Void
+#+begin_src typescript
+function showInfor():void {
+  console.log("hello world");
+}
+showInfor()
+#+end_src
+
+#+RESULTS:
+: hello world
+** Type Assertions
+#+begin_src typescript
+let mVariable: any = "Typescript tranining";
+
+let total = (mVariable as string).length;
+
+console.log(total)
+#+end_src
+
+#+RESULTS:
+: 20
+** Interface - Objects
+#+begin_src typescript
+let obj1: any = {};
+console.log(obj1);
+
+interface CourseInterface {
+  name: string;
+  time: number;
+  free?: boolean;
+}
+
+let obj2: CourseInterface;
+obj2 = {
+  name: "ES6",
+  time: 20,
+}
+console.log(obj2)
+
+let obj3: CourseInterface = {
+  name: "solidity",
+  time: 30,
+  free: true;
+}
+
+console.log(obj3)
+#+end_src
+
+#+RESULTS:
+: ../../../../var/folders/dg/c_c06qk92t58ssym1582rz040000gn/T/babel-HFk02L/ts-src-32uMvS.ts(20,13): error TS1005: ',' expected.
+: {}
+: { name: 'ES6', time: 20 }
+: { name: 'solidity', time: 30, free: true }
+** Interface Array
+#+begin_src typescript
+// let course: string[] = ["ES6", "typescript"];
+// console.log(course)
+
+interface Courselist {
+  [index: number]: string;
+}
+
+let course:Courselist = ["ES6", "typescript"];
+console.log(course)
+#+end_src
+* Function
+** Return
+*** No Return
+#+begin_src typescript
+function funcNoReturn():void {
+    console.log("funcNoReturn")
+}
+funcNoReturn();
+#+end_src
+
+#+RESULTS:
+: funcNoReturn
+
+*** Return
+#+begin_src typescript
+function funcReNumber():number {
+  return 2
+}
+function funcReArray():string[] {
+  return ["a","b"];
+}
+function funcReAny():any[] {
+  return [1,"b"];
+}
+
+console.log(funcReNumber());
+console.log(funcReArray());
+console.log(funcReAny());
+#+end_src
+
+#+RESULTS:
+: 2
+: [ 'a', 'b' ]
+: [ 1, 'b' ]
+
+** Parameter
+#+begin_src typescript
+function userInfor(name: string, age: number): string {
+  return `my name is ${name}, ${age} years old`;
+}
+
+console.log(userInfor("Vu", 27));
+#+end_src
+
+#+RESULTS:
+: my name is Vu, 27 years old
+
+#+begin_src typescript
+function userInfor(name: string = "Dang", age: number = 27): string {
+  return `my name is ${name}, ${age} years old`;
+}
+
+console.log(userInfor("Vu"));
+console.log(userInfor());
+#+end_src
+
+#+RESULTS:
+: my name is Vu, 27 years old
+: my name is Dang, 27 years old
+*** Parameter khuyet
+#+begin_src typescript
+function userInfor(name: string = "Dang", age?: number): string {
+  if (age == null) {
+    return `my name is ${name}`;
+  } else {
+  return `my name is ${name}, ${age} years old`;
+  }
+}
+console.log(userInfor("Vu",27));
+#+end_src
+
+#+RESULTS:
+: my name is Vu, 27 years old
+
+#+begin_src typescript
+function totalLength(x: string, y:string[]):number {
+    return x.length + y.length;
+}
+
+console.log(totalLength("abc",["abdc","dkgjs"]));
+#+end_src
+
+#+RESULTS:
+: 5
+
+#+begin_src typescript
+function totalLength(x: (string | any), y:string[]):number {
+    return x.length + y.length;
+}
+
+console.log(totalLength("abc",["abdc","dkgjs"]));
+#+end_src
+** Rest Parameter
+#+begin_src typescript
+function showStudentInfo(name: string, ...course: string[]):string {
+    return name + " study " + course.join(', ');
+}
+console.log(showStudentInfo("dang","solc","rust","blockchain"));
+#+end_src
+
+#+RESULTS:
+: dang study solc, rust, blockchain
+** Function Types
+#+begin_src typescript
+function userInfor(name: string, age: number): string {
+  return `my name is ${name}, ${age} years old`;
+}
+
+let userInfor02 = function(name: string, age: number): string {
+  return `my name is ${name}, ${age} years old`;
+}
+
+let userInfor03: (name: string, age:number)=> string =
+  function (name, age) {
+    return `my name is ${name}, ${age} years old`;
+  }
+
+
+console.log(userInfor("dang", 27))
+console.log(userInfor02("dang", 27))
+console.log(userInfor03("dang", 27))
+#+end_src
+
+#+RESULTS:
+: my name is dang, 27 years old
+: my name is dang, 27 years old
+: my name is dang, 27 years old
+** Arrow function
+#+begin_src typescript
+let f1 = function(i: number): number {
+  return i * i
+}
+let f2 = function(i: number){
+  return i * i
+}
+
+console.log(f1(5))
+console.log(f2(4))
+#+end_src
+
+#+RESULTS:
+: 25
+: 16
+
+
+#+begin_src typescript
+let f3 = (i: number): number => {
+  return i * i
+}
+console.log(f3(3));
+#+end_src
+
+#+RESULTS:
+: 9
+
+
+#+begin_src typescript
+let f4 = (i: number) => {
+  return i * i
+}
+console.log(f4(4));
+
+let f5 = (i: number) => i * i;
+console.log(f5(5));
+
+#+end_src
+
+#+RESULTS:
+: 16
+: 25
+** Overload
+#+begin_src typescript
+function funcAbc(x: string): number {
+  return 100;
+}
+
+function funcAbc(x: number): string {
+  return "abc";
+}
+console.log(funcAbc(10));
+#+end_src
+
+#+RESULTS:
+: ../../../../var/folders/dg/c_c06qk92t58ssym1582rz040000gn/T/babel-HFk02L/ts-src-fdF2oN.ts(1,10): error TS2393: Duplicate function implementation.
+: ../../../../var/folders/dg/c_c06qk92t58ssym1582rz040000gn/T/babel-HFk02L/ts-src-fdF2oN.ts(5,10): error TS2393: Duplicate function implementation.
+: ../../../../var/folders/dg/c_c06qk92t58ssym1582rz040000gn/T/babel-HFk02L/ts-src-fdF2oN.ts(8,21): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+: abc
+
+#+begin_src typescript
+function funcAbc(x: string):number;
+function funcAbc(x: number):string;
+function funcAbc(x: any):any {
+  if (x instanceof String) {
+    return 100;
+  } else if (typeof x == "number") {
+    return "abc";
+  }
+}
+
+console.log(funcAbc(142))
+#+end_src
+* OOP
+** Class
+#+begin_src typescript
+class Task {
+  id: number;
+  name: string;
+  state: string;
+
+  constructor(id: number, name: string, state: string) {
+    this.id = id;
+    this.name = name;
+    this.state = state;
+  }
+
+  showTaskInfo(){
+    console.log(`${this.id}--${this.name}--{this.state}`);
+  }
+}
+
+let taskobj1 = new Task(69,"coding","process");
+taskobj1.showTaskInfo();
+console.log(taskobj1)
+#+end_src
+
+#+RESULTS:
+: 69--coding--{this.state}
+: Task { id: 69, name: 'coding', state: 'process' }
+** Class 02
+#+begin_src typescript
+interface TaskInterface {
+  id: number;
+  name: string;
+  state?: string;
+
+}
+
+enum taskState {
+  Created = 100,
+  Active,
+  Process,
+  Finish
+}
+
+class TaskService {
+  tasks: TaskInterface[];
+
+  constructor (tasks: TaskInterface[]){
+    this.tasks = tasks;
+  }
+  getItems() {
+    return this.tasks;
+  }
+}
+
+let tasks: TaskInterface[] = [
+  {
+    id: 1, name: "Coding"
+  },
+  {
+    id: 2, name: "Record"
+  },
+  {
+    id: 3, name: "Record", state:taskState.Finish
+  }
+];
+let taskServiceobj =new TaskService(tasks);
+console.log(taskServiceobj.getItems());
+#+end_src
+** Statis
+
+#+begin_src typescript
+interface TaskInterface {
+  id: number;
+  name: string;
+  state?: string;
+
+}
+
+enum taskState {
+  Created = 100,
+  Active,
+  Process,
+  Finish
+}
+
+class taskService {
+  public static username: string = "dang";
+  static tasks: TaskInterface[];
+
+  constructor (tasks: TaskInterface[]){
+    taskService.tasks = tasks;
+  }
+  getItems() {
+    return taskService.tasks;
+  }
+
+  static showItemInfo(): void{
+    for(let task of this.tasks) {
+      console.log(`${taskService.username} -- ${task.name}`);
+    }
+  }
+}
+
+let taskServiceobj = new taskService([
+  {
+    id: 1, name: "Coding"
+  },
+  {
+    id: 2, name: "Record"
+  },
+  {
+    id: 3, name: "OK", state:taskState.Finish
+  }
+]);
+
+// console.log(taskServiceobj.getItems());
+taskService.showItemInfo();
+
+#+end_src
+
+#+RESULTS:
+: ../../../../var/folders/dg/c_c06qk92t58ssym1582rz040000gn/T/babel-355uS0/ts-src-n77f7K.ts(41,24): error TS2322: Type 'taskState' is not assignable to type 'string'.
+: dang -- Coding
+: dang -- Record
+: dang -- OK
+** Inheritance
+#+begin_src typescript
+class Course {
+  id: string;
+  name: string;
+  price: number;
+
+  constructor(id: string, name: string, price: number) {
+    this.id = id;
+    this.name = name;
+    this.price = price;
+  }
+
+  showCourseInfo(): void {
+    console.log(`${this.id} - ${this.name} - ${this.price}`);
+  }
+}
+
+class CourseMobile extends Course {
+  author: string;
+
+  constructor(id: string, name: string, price: number,author: string) {
+    super(id,name,price);
+    this.author = author;
+  }
+  showCourseInfo():void {
+    super.showCourseInfo();
+    console.log(this.author);
+  }
+}
+
+var courseObj = new Course('C50',"Blockchain", "1000$");
+courseObj.showCourseInfo();
+
+var courseObj2 = new CourseMobile('C50',"Blockchain", "1000$","vu");
+courseObj2.showCourseInfo();
+#+end_src
+
+#+RESULTS:
+: ../../../../var/folders/dg/c_c06qk92t58ssym1582rz040000gn/T/babel-355uS0/ts-src-Vwuylu.ts(30,48): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+: ../../../../var/folders/dg/c_c06qk92t58ssym1582rz040000gn/T/babel-355uS0/ts-src-Vwuylu.ts(33,55): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+: C50 - Blockchain - 1000$
+: C50 - Blockchain - 1000$
+: vu
+** Access Modifiers
+#+begin_src typescript
+class Course {
+  id: string;
+  name: string;
+  price: number;
+
+  constructor(id: string, name: string, price: number) {
+    this.id = id;
+    this.name = name;
+    this.price = price;
+  }
+
+  showCourseInfo(): void {
+    console.log(`${this.id} - ${this.name} - ${this.price}`);
+  }
+}
+
+class CourseMobile extends Course {
+  author: string;
+
+  constructor(id: string, name: string, price: number,author: string) {
+    super(id,name,price);
+    this.author = author;
+  }
+  showCourseInfo():void {
+    super.showCourseInfo();
+    console.log(this.author);
+  }
+}
+
+let courseObj = new Course('C50',"Blockchain", 1000);
+console.log(courseObj.id)
+#+end_src
+
+#+RESULTS:
+: C50
+
+|           | Inside | Outside | Child Class |
+| public    | x      | x       | x           |
+| private   | x      |         |             |
+| protected | x      |         | x           |
+
+** Accessors
+#+begin_src typescript
+class Course {
+  private _name: string;
+  constructor(name: string) {
+    this._name = name;
+  }
+
+  showCourseInfo(){
+    console.log(`${this._name}`)
+  }
+
+  public get name():string {
+    return this._name;
+  }
+
+  public set name(v: string):string {
+    this._name = v;
+  }
+}
+
+var courseObj = new Course("Typescript");
+console.log(courseObj);
+console.log("Name: " + courseObj.name);
+courseObj.name = "Typescript training";
+console.log("Name: " + courseObj.name);
+#+end_src
+** Abstract
+#+begin_src typescript
+abstract class Laptop {
+  public keyboard():void {
+    console.log("Laptop.keyboard");
+  }
+
+  abstract public mainboard(abc: string): string;
+
+  public chipset():void {
+    console.log("Laptop.chipset");
+  }
+}
+
+class LaptopDell extends Laptop {
+  public keyboard():void {
+    console.log("LaptopDell.keyboard");
+  }
+  public mainboard():string {
+    console.log("LaptopDell.mainboard");
+    return "123";
+  }
+}
+
+let LaptopObj: Laptop = new LaptopDell();
+LaptopObj.keyboard();
+LaptopObj.mainboard();
+LaptopObj.chipset();
+#+end_src
+** Interface
+#+begin_src typescript
+interface People {
+  name: string;
+  eat():void;
+  sleep():void;
+}
+
+interface Bird {
+  fly(): void;
+}
+
+class Machine{
+  caculate(x: number, y: number) :number {
+    return x + y;
+  }
+}
+
+class superMen extends Machine implements People, Bird {
+  name: string;
+
+  constructor (name: string) {
+    super();
+    this.name = name;
+  }
+
+  eat():void {
+    console.log("eat");
+  }
+  sleep():void {
+    console.log("sleep");
+  }
+  fly():void{
+    console.log("fly");
+  }
+}
+
+let dang: superMen = new superMen("Dang");
+dang.eat();
+dang.sleep();
+dang.fly();
+console.log(dang.caculate(8,7));
+#+end_src
+
+#+RESULTS:
+: eat
+: sleep
+: fly
+: 15
+* Generic
+** Basic
+#+begin_src typescript
+function showInfo1(x: number):number {
+    return 100;
+}
+function showInfo2(x: string):string {
+    return "abc";
+}
+function showInfo<T>(x: T):T{
+  return x;
+}
+showInfo<string>("abc");
+showInfo<number>(123);
+showInfo<boolean>(true);
+#+end_src
+** Methods
+#+begin_src typescript
+class studyGeneric{
+  static sprintArray<T>(params: T[]):void {
+    console.log(params);
+  }
+}
+studyGeneric.sprintArray<number>([1,2,3,4]);
+studyGeneric.sprintArray<string>(["a","b","c"]);
+studyGeneric.sprintArray<any>(["a","b","c",1,2,3,4,true,false]);
+#+end_src
+
+#+RESULTS:
+: [ 1, 2, 3, 4 ]
+: [ 'a', 'b', 'c' ]
+: [
+:   'a', 'b',  'c',
+:   1,   2,    3,
+:   4,   true, false
+: ]
+** Class
+#+begin_src typescript
+class Product<A, B, C> {
+  id: A;
+  name: B;
+  price: C;
+
+  constructor(id: A, name: B, price: C){
+    this.id = id;
+    this.name= name;
+    this.price = price;
+  }
+
+  showCourseInfo(){
+    console.log(`${this.id} - ${this.name} - ${this.price}`);
+  }
+}
+
+let Product1 = new Product<string,string,number>("ID1", "SOLC", 1000);
+let Product2 = new Product<number, string, string>(12, "SOLC", "100 USD");
+Product1.showCourseInfo();
+Product2.showCourseInfo();
+#+end_src
+* Module & Namespace
+**
